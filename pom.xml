@@ -69,17 +69,18 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>${maven-jar-plugin.version}</version>
+          <configuration>
+            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+          </configuration>
           <executions>
             <execution>
               <id>default-jar</id>
-              <phase>package</phase>
               <goals>
                 <goal>jar</goal>
               </goals>
             </execution>
             <execution>
               <id>javadoc-jar</id>
-              <phase>package</phase>
               <goals>
                 <goal>jar</goal>
               </goals>
@@ -89,7 +90,6 @@
             </execution>
             <execution>
               <id>sources-jar</id>
-              <phase>package</phase>
               <goals>
                 <goal>jar</goal>
               </goals>
@@ -98,11 +98,45 @@
               </configuration>
               </execution>
           </executions>
+        </plugin>
+
+        <!--
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.3.0</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
           <configuration>
             <outputDirectory>${project.build.directory}/lib</outputDirectory>
           </configuration>
         </plugin>
-        
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.6.3</version>
+          <configuration>
+            <show>protected</show>
+            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+          </configuration>
+          <executions>
+            <execution>
+              <id>attach-javadoc</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        -->
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -148,14 +182,19 @@
               <goals>
                 <goal>sign</goal>
               </goals>
+              <!--
               <configuration>
                 <gpgArguments>
-                  <arg>--pinentry-mode</arg>
+                  <arg>\-\-pinentry-mode</arg>
                   <arg>loopback</arg>
                 </gpgArguments>
-            </configuration>
+              </configuration>
+              -->
             </execution>
           </executions>
+          <configuration>
+            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+          </configuration>
         </plugin>
 
         <plugin>
@@ -177,6 +216,13 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+      </plugin>
+    </plugins>
 
     <defaultGoal>package</defaultGoal>
   </build>
